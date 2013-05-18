@@ -22,11 +22,11 @@ The line will be sent through to Heroku using the provided details. If you want 
 You can customise the following attributes on the yielded line object:
 
 * `token` – the logplex token,
-* `version` – the logplex version, which defaults to '<134>1',
-* `timestamp` – the timestamp for the line, which defaults to the current time, in the following format: '%Y-%m-%dT%H:%M:%S.ms+00:00',
-* `hostname` – host name of the log source (doesn't seem to impact Heroku's output),
+* `version` – the logplex version, which defaults to `<134>1`,
+* `timestamp` – the timestamp for the line, which defaults to the current time, in the following format: `%Y-%m-%dT%H:%M:%S.ms+00:00`,
+* `hostname` – host name of the log source (doesn't seem to impact Heroku's output), defaults to your computer's host name,
 * `process_id` – the source of the log file (e.g. web.1)
-* `message_id` – defaults to '- -', and
+* `message_id` – defaults to `- -`, and
 * `message` – the remainder/core of the log line, which defaults to the entire raw line from the file.
 
 The line also has two attributes available to help any custom logic you may involve in the processing: `file` (the file that has a new line appended) and `raw` (the raw line that has appeared in the file).
