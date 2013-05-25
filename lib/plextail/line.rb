@@ -8,13 +8,15 @@ class Plextail::Line
   attr_accessor :file, :raw, :token, :version, :timestamp, :hostname,
     :process_id, :message_id, :message
 
-  def initialize(file, raw)
+  def initialize(file, raw, &block)
     @file, @raw = file, raw
     @version    = DEFAULTS[:version]
     @timestamp  = current_timestamp
     @hostname   = DEFAULTS[:hostname]
     @message_id = DEFAULTS[:message_id]
     @message    = raw.dup
+
+    block.call self if block_given?
   end
 
   def to_s

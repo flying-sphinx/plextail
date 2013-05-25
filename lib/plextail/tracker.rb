@@ -9,21 +9,11 @@ class Plextail::Tracker
   end
 
   def pipe(&block)
-    file = Dir[glob].first
-    PTY.spawn("tail -f #{glob}") do |stdin, stdout, pid|
-      stdin.each do |string|
-        string.strip!
-        if string[/^==> (.+) <==$/]
-          file = $1
-        elsif string.length > 0
-          line = Plextail::Line.new file, string
-          block.call line
-          to_plex line
-        end
-      end
+    if @glob.empty?
+      pipe_from_input nil, &block
+    else
+      pipe_from_glob Dir[glob].first, &block
     end
-  rescue PTY::ChildExited
-    puts "The child process exited!"
   end
 
   private
@@ -34,6 +24,31 @@ class Plextail::Tracker
     @connection ||= Faraday.new(:url => URL) do |connection|
       connection.use Faraday::Adapter::NetHttp
     end
+  end
+
+  def pipe_from_glob(file, &block)
+    PTY.spawn("tail -f #{glob}") do |stdin, stdout, pid|
+      stdin.each do |string|
+        file = process_line file, string, &block
+      end
+    end
+  rescue PTY::ChildExited
+    puts "The child process exited!"
+  end
+
+  def pipe_from_input(file, &block)
+    ARGF.each_line do |string|
+      file = process_line file, string, &block
+    end
+  end
+
+  def process_line(file, string, &block)
+    string.strip!
+    return $1 if string[/^==> (.+) <==$/]
+
+    to_plex Plextail::Line.new file, string, &block if string.length > 0
+
+    file
   end
 
   def to_plex(line)

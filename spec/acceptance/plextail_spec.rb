@@ -67,4 +67,20 @@ describe 'Plextail' do
     yielded_file.should == File.join(directory, 'data.log')
     yielded_line.should == 'stuff'
   end
+
+  it "reads from piped-in input if no path is supplied" do
+    stub_const 'ARGF', `tail #{directory}/*.log`
+
+    yielded_file, yielded_line = nil, nil
+
+    Plextail.track do |line|
+      yielded_file, yielded_line = line.file, line.raw
+
+      line.token      = 'token'
+      line.process_id = 'spec'
+    end
+
+    yielded_file.should == File.join(directory, 'error.log')
+    yielded_line.should == 'nonsense'
+  end
 end
