@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Plextail::Line
   DEFAULTS = {
     :version    => '<134>1',
