@@ -1,7 +1,7 @@
 # encoding: utf-8
 Gem::Specification.new do |spec|
   spec.name          = 'plextail'
-  spec.version       = '0.0.1'
+  spec.version       = '0.0.2'
   spec.authors       = ['Pat Allan']
   spec.email         = ['pat@freelancing-gods.com']
   spec.summary       = 'Pipes tailed files to Heroku Logplex'
