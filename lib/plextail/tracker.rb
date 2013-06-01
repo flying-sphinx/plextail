@@ -23,6 +23,8 @@ class Plextail::Tracker
 
   def connection
     @connection ||= Faraday.new(:url => URL) do |connection|
+      connection.request :retry, :max => 3, :interval => 0.05,
+        :exceptions => [Faraday::Error::ConnectionFailed, 'Timeout::Error']
       connection.use Faraday::Adapter::NetHttp
     end
   end
