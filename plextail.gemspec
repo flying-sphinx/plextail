@@ -18,6 +18,6 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'fakeweb',         '~> 1.3.0'
   spec.add_development_dependency 'fakeweb-matcher', '~> 1.2.2'
-  spec.add_development_dependency 'rake',            '~> 10.0.4'
+  spec.add_development_dependency 'rake',            '>= 10.0.4'
   spec.add_development_dependency 'rspec',           '~> 2.13.0'
 end
